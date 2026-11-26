@@ -9,6 +9,8 @@ let renderTimer;
 let spineData;
 
 let customScale = 1;
+let positionX = 0;
+let positionY = 0;
 let targetFps = 60;
 let bgmfile = './assets/audio/Theme_244.ogg';
 let bgmvolume = 0;
@@ -55,6 +57,14 @@ const AUDIO_DETAIL = [
 				Chinese: [
 					"青春，真是弹指一瞬的事物呢。",
 					"激烈而跃动但又很快消失，就如同火焰一般……"
+				],
+				TraditionalChinese: [
+					"所謂的青春，總是轉瞬即逝呢。",
+					"激烈而躍動但又很快消失，就如同火焰一般……"
+				],
+				Korean: [
+					"청춘은, 빨리 지나가는 것 같아.",
+					"화려하게 타오르고 이 불꽃처럼 빨리 사라집니다."
 				]
 			}
 	},
@@ -71,6 +81,14 @@ const AUDIO_DETAIL = [
 				Chinese: [
 					"我也是一直这认为的。",
 					"……只有锻炼的话青春也将平淡的结束。"
+				],
+				TraditionalChinese: [
+					"我也一直是這麼想的。",
+					"……認為我的青春，會只在鍛鍊中畫下句點。"
+				],
+				Korean: [
+					"나도 처음엔 그렇게 생각했어.",
+					"……단련만 하다가, 청춘이 끝나버리겠지하고."
 				]
 			}
 	},
@@ -90,6 +108,16 @@ const AUDIO_DETAIL = [
 					"但是现在不同。",
 					"与师傅相遇之后就变了。",
 					"每天都很开心而且很充实。"
+				],
+				TraditionalChinese: [
+					"但是現在不同。",
+					"在遇見師父之後已經改變了。",
+					"每天都很快樂、很充實。"
+				],
+				Korean: [
+					"하지만 지금은 달라요.",
+					"스승님과 만나고 많은 게 바뀌었으니까.",
+					"매일이 즐겁고 충실한 느낌이야."
 				]
 			}
 	},
@@ -109,6 +137,16 @@ const AUDIO_DETAIL = [
 					"当然时光无法倒流……。",
 					"就算是从现在开始也还有青春。",
 					"既然像火焰一般转瞬即逝那就添加新的柴火重燃不就好了。"
+				],
+				TraditionalChinese: [
+					"當然，時間確實無法倒流……",
+					"但我覺得從今以後，還是能夠繼續青春下去。",
+					"如果火焰快要熄滅了的話，只要再添加新的柴火就行了。"
+				],
+				Korean: [
+					"물론, 시간은 돌이킬 수 없지만……",
+					"앞으로도, 충분히 청춘을 즐길 수 있다 생각해.",
+					"불꽃이 꺼질 것 같으면, 새로운 장작을 태우면 되니까."
 				]
 			}
 	},
@@ -122,6 +160,12 @@ const AUDIO_DETAIL = [
 				],
 				Chinese: [
 					"所以，师傅……能跟我一起过完这个青春吗？"
+				],
+				TraditionalChinese: [
+					"所以，師傅……能跟我一起過完這個青春嗎？"
+				],
+				Korean: [
+					"그래서 마스터... 당신은 나와 함께 남아 영원히 젊음을 유지 할 것인가?"
 				]
 			}
 	}
@@ -307,7 +351,8 @@ function drawHitboxes() {
 		n = (n / transpose) - (d[side].length / (transpose * 2));
 		n = n * customScale + (d[side].length / (transpose * 2));
 		n = (d[side].length / (transpose * 2)) - n;
-		return d[side].mid - n;
+		const offset = side === 'x' ? canvas.width * positionX : canvas.height * positionY;
+		return d[side].mid - n + offset;
 	}
 
 	for (const key in HITBOX) {
@@ -400,14 +445,57 @@ function setMouse(event) {
 		ax = canvas.width - ax;
 	}
 
-	return { x: ax, y: ay }
+	return { x: ax - canvas.width * positionX, y: ay - canvas.height * positionY };
 }
 
-window.selectedLanguage = 'Japanese'; // 全局语言变量（挂载到window对象）
+let interfaceLanguage = 'default';
+let steamLanguage = '';
+let subtitleLanguagePreference = 'auto';
+window.selectedLanguage = 'English';
+const subtitleLocales = {
+	English: 'en',
+	Chinese: 'zh-Hans',
+	TraditionalChinese: 'zh-Hant',
+	Japanese: 'ja',
+	Korean: 'ko'
+};
+
+function updateSubtitleLanguage() {
+	let language = subtitleLanguagePreference;
+	if (language === 'auto') {
+		const locale = interfaceLanguage === 'default' ? steamLanguage : interfaceLanguage;
+		const [primary, region] = locale.split(/[-_]/);
+		if (primary === 'tchinese' || (primary === 'zh' && ['cht', 'hant', 'tw', 'hk', 'mo'].includes(region))) {
+			language = 'TraditionalChinese';
+		} else if (primary === 'schinese' || primary === 'zh') {
+			language = 'Chinese';
+		} else if (primary === 'ja' || primary === 'japanese') {
+			language = 'Japanese';
+		} else if (primary === 'ko' || primary === 'korean' || primary === 'koreana') {
+			language = 'Korean';
+		} else {
+			language = 'English';
+		}
+	}
+
+	if (language === window.selectedLanguage) return;
+	window.selectedLanguage = language;
+	textbox.lang = subtitleLocales[language];
+	const clip = currentTracks.at(-1);
+	if (dialogBox && clip) textbox.textContent = clip.dialog[language][clip.index];
+}
 
 function init() {
 	// Wallpaper Engine settings
 	window.wallpaperPropertyListener = {
+		applyGeneralProperties: (props) => {
+			const language = props.language?.value ?? props.language;
+			const steamLocale = props.steamlanguage?.value ?? props.steamlanguage;
+			if (typeof language !== 'string' && typeof steamLocale !== 'string') return;
+			if (typeof language === 'string') interfaceLanguage = language.toLowerCase();
+			if (typeof steamLocale === 'string') steamLanguage = steamLocale.toLowerCase();
+			updateSubtitleLanguage();
+		},
 		applyUserProperties: (props) => {
 			if (props.schemecolor) {
 				bufferColor = props.schemecolor.value.split(" ");
@@ -416,8 +504,16 @@ function init() {
 			if (props.scale) {
 				customScale = props.scale.value;
 				document.documentElement.style.setProperty('--wallpaper-scale', customScale);
-				resize();
 			}
+			if (props.positionx) {
+				positionX = props.positionx.value / 100;
+				document.documentElement.style.setProperty('--wallpaper-position-x', props.positionx.value + 'vw');
+			}
+			if (props.positiony) {
+				positionY = props.positiony.value / 100;
+				document.documentElement.style.setProperty('--wallpaper-position-y', props.positiony.value + 'vh');
+			}
+			if (props.scale || props.positionx || props.positiony) resize();
 			if (props.targetfps) targetFps = props.targetfps.value;
 
 			if (props.introanimation) introAnimation = props.introanimation.value;
@@ -425,7 +521,7 @@ function init() {
 				const selected = props.modelresolution.value;
 				if (['2k', '4k', '8k'].includes(selected)) modelResolution = selected;
 			}
-			requestModelResolution();
+			requestModelResolution(Boolean(props.modelresolution));
 
 			if (props.mousetracking) mouseOptions.mousetracking = props.mousetracking.value;
 			if (props.headpatting) mouseOptions.headpatting = props.headpatting.value;
@@ -436,14 +532,10 @@ function init() {
 			if (props.dialogy) textbox.style.top = props.dialogy.value + '%';
 			if (props.drawHitboxes) mouseOptions.drawHitboxes = props.drawHitboxes.value;
 
-			// 新增：监听语言选择
 			if (props.dialoglanguage) {
-				window.selectedLanguage = props.dialoglanguage.value; // 更新全局语言变量
-				// 更新当前播放的音频文本
-				const clip = currentTracks[currentTracks.length - 1];
-				if (dialogBox && clip) {
-					textbox.textContent = clip.dialog[window.selectedLanguage][clip.index];
-				}
+				const language = props.dialoglanguage.value;
+				subtitleLanguagePreference = Object.hasOwn(subtitleLocales, language) ? language : 'auto';
+				updateSubtitleLanguage();
 			}
 
 			if (props.bgmfile) {
@@ -466,6 +558,7 @@ function init() {
 	};
 
 	textbox = document.getElementById('textbox');
+	textbox.lang = subtitleLocales[window.selectedLanguage];
 
 	canvas = document.getElementById('canvas');
 	canvas.addEventListener('mouseleave', releaseHeadpatOnExit);
@@ -496,6 +589,7 @@ function init() {
 		if (typeof introAnimation === 'undefined') introAnimation = true;
 		requestModelResolution();
 	}, 350);
+	window.addEventListener('resize', resize);
 	window.addEventListener('pagehide', event => {
 		if (event.persisted) return;
 		canvas.style.visibility = 'hidden';
@@ -544,8 +638,8 @@ function interactionLoad() {
 	return 1;
 }
 
-function requestModelResolution() {
-	if (!assetManager || modelFrame || typeof introAnimation === 'undefined' || loadingResolution === modelResolution) return;
+function requestModelResolution(force = false) {
+	if (!assetManager || modelFrame || typeof introAnimation === 'undefined' || (!force && loadingResolution === modelResolution)) return;
 	loadingResolution = modelResolution;
 	const directory = loadingResolution === '8k' ? 'assets/' : 'assets/' + loadingResolution + '/';
 	const models = [CHARACTER + '_home'];
@@ -735,9 +829,12 @@ function render() {
 function resize() {
 	let w = canvas.clientWidth;
 	let h = canvas.clientHeight;
+	if (w === 0 || h === 0) return;
 	if (canvas.width != w || canvas.height != h) {
 		canvas.width = w;
 		canvas.height = h;
+		overlay.width = w;
+		overlay.height = h;
 	}
 
 	// Set values to position skeleton to center of canvas.
@@ -763,7 +860,7 @@ function resize() {
 		transpose = 1600 / canvas.height;
 	}
 
-	mvp.ortho2d(centerX - width / 2, centerY - height / 2, width, height);
+	mvp.ortho2d(centerX - width / 2 - positionX * width, centerY - height / 2 + positionY * height, width, height);
 	gl.viewport(0, 0, canvas.width, canvas.height);
 }
 
