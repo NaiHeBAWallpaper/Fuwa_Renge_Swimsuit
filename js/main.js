@@ -51,21 +51,22 @@ const AUDIO_DETAIL = [
 					"激しく燃え上がって、すぐに消えちゃう……この炎みたいに。"
 				],
 				English: [
-					"Youth... it's over in the blink of an eye.",
-					"It burns fiercely and fades away quickly... like this flame."
+					"My youth sure is flying by.",
+					"Just like this flame. It burns so fiercely, then sputters out in a flash..."
 				],
 				Chinese: [
-					"青春，真是弹指一瞬的事物呢。",
-					"激烈而跃动但又很快消失，就如同火焰一般……"
+					"青春啊，总觉得转瞬即逝呢。",
+					"燃烧时那么轰轰烈烈，却又很快会熄灭……就像这烟花一样。"
 				],
 				TraditionalChinese: [
 					"所謂的青春，總是轉瞬即逝呢。",
-					"激烈而躍動但又很快消失，就如同火焰一般……"
+					"在劇烈燃燒之後，迅速地消失無蹤……就像這團火焰一樣。"
 				],
 				Korean: [
 					"청춘은, 빨리 지나가는 것 같아.",
-					"화려하게 타오르고 이 불꽃처럼 빨리 사라집니다."
-				]
+					"격렬하게 타오르다가, 금방 꺼지는…… 이 불꽃처럼."
+				],
+				Thai: ["วัยรุ่นเหมือนจะ ผ่านไปเร็วเลยละ","ได้ลุกโชนอย่างรุนแรง แต่เดี๋ยวเดียวก็ดับลง... เหมือนประกายไฟนี่เลย"]
 			}
 	},
 	{
@@ -75,12 +76,12 @@ const AUDIO_DETAIL = [
 					"……鍛錬だけで、青春が終わっちゃうんだろうなって。"
 				],
 				English: [
-					"I thought so too, all this time.",
-					"...I figured youth would end just with training."
+					"That's how I used to feel.",
+					"...Like my youth would sputter out with endless training."
 				],
 				Chinese: [
-					"我也是一直这认为的。",
-					"……只有锻炼的话青春也将平淡的结束。"
+					"一开始我也是这么想的。",
+					"……觉得青春，应该会在修炼中结束吧。"
 				],
 				TraditionalChinese: [
 					"我也一直是這麼想的。",
@@ -89,7 +90,8 @@ const AUDIO_DETAIL = [
 				Korean: [
 					"나도 처음엔 그렇게 생각했어.",
 					"……단련만 하다가, 청춘이 끝나버리겠지하고."
-				]
+				],
+				Thai: ["ตอนแรกฉันก็ คิดแบบนั้นนะ","คิดว่าถ้าเอาแต่ฝึกฝน ไปเรื่อยๆ วัยรุ่นก็คงจบลง..."]
 			}
 	},
 	{
@@ -100,25 +102,26 @@ const AUDIO_DETAIL = [
 					"毎日が楽しくて、充実してる。"
 				],
 				English: [
-					"But now it's different.",
-					"Meeting you changed that.",
-					"Every day is fun and fulfilling."
+					"But I don't feel that way anymore.",
+					"So much has changed since I met you, Mentor.",
+					"Every day feels fun and fulfilling."
 				],
 				Chinese: [
-					"但是现在不同。",
-					"与师傅相遇之后就变了。",
-					"每天都很开心而且很充实。"
+					"但是，现在不这么想了。",
+					"自从遇见了师父，很多事情就都改变了。",
+					"感觉每天都很开心，也很充实。"
 				],
 				TraditionalChinese: [
-					"但是現在不同。",
+					"但是，現在不一樣了。",
 					"在遇見師父之後已經改變了。",
 					"每天都很快樂、很充實。"
 				],
 				Korean: [
-					"하지만 지금은 달라요.",
+					"하지만 이젠 아니야.",
 					"스승님과 만나고 많은 게 바뀌었으니까.",
 					"매일이 즐겁고 충실한 느낌이야."
-				]
+				],
+				Thai: ["แต่ว่าตอนนี้ไม่ใช่อย่างนั้นแล้วละ","เพราะพอได้เจอท่านอาจารย์ ก็มีหลายอย่างที่เปลี่ยนไป","ฉันรู้สึกสนุก และจริงใจกับทุกวัน"]
 			}
 	},
 	{
@@ -129,14 +132,14 @@ const AUDIO_DETAIL = [
 					"炎が消えそうなら、新しい薪をくべてやればいいんだ。"
 				],
 				English: [
-					"Of course, time can't turn back...",
-					"But even from now, we can still have youth.",
-					"If the flame starts to fade, just add new firewood."
+					"I know I can't turn back time...",
+					"But I think that I can still enjoy what's left of my youth.",
+					"We can always add more firewood to a dying flame."
 				],
 				Chinese: [
-					"当然时光无法倒流……。",
-					"就算是从现在开始也还有青春。",
-					"既然像火焰一般转瞬即逝那就添加新的柴火重燃不就好了。"
+					"当然了，逝去的时光无法倒流……",
+					"但我觉得从今以后，也还是能尽情享受青春。",
+					"如果火焰快熄灭了，点燃新的柴火就好了。"
 				],
 				TraditionalChinese: [
 					"當然，時間確實無法倒流……",
@@ -147,7 +150,8 @@ const AUDIO_DETAIL = [
 					"물론, 시간은 돌이킬 수 없지만……",
 					"앞으로도, 충분히 청춘을 즐길 수 있다 생각해.",
 					"불꽃이 꺼질 것 같으면, 새로운 장작을 태우면 되니까."
-				]
+				],
+				Thai: ["แน่นอนว่ากาลเวลา ไม่อาจย้อนคืนได้...","แต่ต่อไป ฉันก็คิดว่าจะสนุก กับวัยรุ่นได้เต็มที่นะ","ถ้าประกายไฟใกล้จะดับ ก็แค่เอาฟืนชิ้นใหม่ มาเติมไฟก็พอ"]
 			}
 	},
 	{
@@ -156,17 +160,18 @@ const AUDIO_DETAIL = [
 					"だから師匠……ずっと一緒に青春してくれる……よな？"
 				],
 				English: [
-					"So Master... will you stay with me and keep having youth... forever?"
+					"So, Mentor... Will you keep doing youth activities...with me?"
 				],
 				Chinese: [
-					"所以，师傅……能跟我一起过完这个青春吗？"
+					"所以啊，师父……你会一直和我享受青春……的吧？"
 				],
 				TraditionalChinese: [
-					"所以，師傅……能跟我一起過完這個青春嗎？"
+					"所以師父……你會一直和我一起享受青春……對吧？"
 				],
 				Korean: [
-					"그래서 마스터... 당신은 나와 함께 남아 영원히 젊음을 유지 할 것인가?"
-				]
+					"그러니까 스승님…… 계속 함께 청춘, 해줄……거지?"
+				],
+				Thai: ["เพราะงั้น ท่านอาจารย์... จะช่วยเป็นวัยรุ่น ไปด้วยกัน... ใช่มั้ย?"]
 			}
 	}
 ];
@@ -278,7 +283,7 @@ function playVoiceline() {
 			track.play().catch(finish);
 
 			if (dialogBox) {
-				textbox.textContent = dialog[window.selectedLanguage][index];
+				textbox.textContent = getSubtitleText(dialog, window.selectedLanguage, index);
 				textbox.style.opacity = 1;
 			}
 		},
@@ -457,8 +462,19 @@ const subtitleLocales = {
 	Chinese: 'zh-Hans',
 	TraditionalChinese: 'zh-Hant',
 	Japanese: 'ja',
-	Korean: 'ko'
+	Korean: 'ko',
+	Thai: 'th'
 };
+
+function getSubtitleText(dialog, language, index) {
+	let text = dialog?.[language]?.[index];
+	if (text == null && language === 'Thai') {
+		language = 'English';
+		text = dialog?.[language]?.[index];
+	}
+	textbox.lang = subtitleLocales[language];
+	return text ?? "";
+}
 
 function updateSubtitleLanguage() {
 	let language = subtitleLanguagePreference;
@@ -473,6 +489,8 @@ function updateSubtitleLanguage() {
 			language = 'Japanese';
 		} else if (primary === 'ko' || primary === 'korean' || primary === 'koreana') {
 			language = 'Korean';
+		} else if (primary === 'th' || primary === 'thai') {
+			language = 'Thai';
 		} else {
 			language = 'English';
 		}
@@ -482,7 +500,7 @@ function updateSubtitleLanguage() {
 	window.selectedLanguage = language;
 	textbox.lang = subtitleLocales[language];
 	const clip = currentTracks.at(-1);
-	if (dialogBox && clip) textbox.textContent = clip.dialog[language][clip.index];
+	if (dialogBox && clip) textbox.textContent = getSubtitleText(clip.dialog, language, clip.index);
 }
 
 function init() {
